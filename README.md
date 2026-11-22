@@ -44,6 +44,7 @@ You can filter by queue and by period (normal days vs the festive peak).
 ```
 ├── index.html                       # web dashboard (Chart.js), served on GitHub Pages
 ├── dax_measures.md                  # DAX measures for the Power BI model
+├── powerbi/                         # Power BI build: queries, TMDL model, rebuild guide
 ├── generate_data.js                 # makes the simulated data (seeded, so it's repeatable)
 └── data/
     ├── daily_queue_performance.csv  # one row per date x queue
@@ -63,10 +64,9 @@ You can filter by queue and by period (normal days vs the festive peak).
 
 ## Using it in Power BI
 
-1. Load both CSVs in Power BI Desktop (Get data → Text/CSV).
-2. Add a date table and mark it as the date table.
-3. Paste the measures from `dax_measures.md`.
-4. Build the same visuals as the web version: KPI cards, line charts by date, and a matrix (weekday x hour) with conditional formatting for the heatmap.
+The Power BI report is built and running in the Power BI service (two pages: Overview and Intraday). It reads the CSVs in `/data` straight from this repo, so a refresh picks up any change here.
+
+Everything needed to rebuild it is in [`powerbi/`](powerbi/): the two Power Query scripts, the full model as TMDL (calendar, KPI measures, relationship), and a short step-by-step guide with the numbers you should see.
 
 ## Run the web version locally
 
