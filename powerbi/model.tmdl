@@ -1,0 +1,160 @@
+createOrReplace
+
+	table Calendar
+		dataCategory: Time
+
+		column Date
+			dataType: dateTime
+			formatString: dd mmm yyyy
+			isKey
+			isNameInferred
+			sourceColumn: [Date]
+			summarizeBy: none
+
+		column Month = FORMAT('Calendar'[Date], "mmm yyyy")
+			dataType: string
+			sortByColumn: 'Month No'
+			summarizeBy: none
+
+		column 'Month No' = YEAR('Calendar'[Date]) * 100 + MONTH('Calendar'[Date])
+			dataType: int64
+			isHidden
+			summarizeBy: none
+
+		column 'Week Start' = 'Calendar'[Date] - WEEKDAY('Calendar'[Date], 3)
+			dataType: dateTime
+			formatString: dd mmm
+			summarizeBy: none
+
+		column Weekday = FORMAT('Calendar'[Date], "ddd")
+			dataType: string
+			sortByColumn: 'Weekday No'
+			summarizeBy: none
+
+		column 'Weekday No' = WEEKDAY('Calendar'[Date], 2)
+			dataType: int64
+			isHidden
+			summarizeBy: none
+
+		column Period = IF('Calendar'[Date] >= DATE(2026,10,15) && 'Calendar'[Date] <= DATE(2026,10,25), "Festive peak", "Business as usual")
+			dataType: string
+			summarizeBy: none
+
+		partition Calendar = calculated
+			mode: import
+			source = CALENDAR(DATE(2026,7,1), DATE(2026,10,31))
+
+	/// Contact Centre WFM Performance model. Built by Rahul (github.com/mail4rahulwork-sketch). All data is simulated.
+	table KPIs
+
+		/// Contacts that came in.
+		measure 'Offered' = SUM(DailyQueue[Offered])
+			formatString: "#,0"
+
+		/// Contacts answered.
+		measure 'Handled' = SUM(DailyQueue[Handled])
+			formatString: "#,0"
+
+		/// Contacts we planned for.
+		measure 'Forecast' = SUM(DailyQueue[Forecast_Volume])
+			formatString: "#,0"
+
+		/// Share of handled contacts answered within the target time.
+		measure 'Service Level %' = DIVIDE(SUM(DailyQueue[Answered_Within_SL]), [Handled])
+			formatString: "0.0%"
+
+		/// Target, weighted by handled volume.
+		measure 'SL Target %' = DIVIDE(SUMX(DailyQueue, DailyQueue[SL_Target] * DailyQueue[Handled]), [Handled])
+			formatString: "0.0%"
+
+		/// Share of offered contacts that hung up or left before being answered.
+		measure 'Abandon %' = DIVIDE(SUM(DailyQueue[Abandoned]), [Offered])
+			formatString: "0.0%"
+
+		/// 1 minus WAPE, at day and queue level.
+		measure 'Forecast Accuracy %' = 1 - DIVIDE(SUMX(DailyQueue, ABS(DailyQueue[Offered] - DailyQueue[Forecast_Volume])), [Offered])
+			formatString: "0.0%"
+
+		/// How far actual volume landed above or below the forecast.
+		measure 'Volume vs Forecast %' = DIVIDE([Offered] - [Forecast], [Forecast])
+			formatString: "+0.0%;-0.0%;0.0%"
+
+		/// Average handle time in seconds, weighted by handled.
+		measure 'AHT (s)' = DIVIDE(SUMX(DailyQueue, DailyQueue[AHT_Sec] * DailyQueue[Handled]), [Handled])
+			formatString: "#,0"
+
+		/// Actual minus required FTE, averaged per day and queue.
+		measure 'Staffing Gap (FTE)' = AVERAGEX(DailyQueue, DailyQueue[Actual_FTE] - DailyQueue[Required_FTE])
+			formatString: "+0.0;-0.0;0.0"
+
+		/// Average FTE needed per day and queue.
+		measure 'Required FTE' = AVERAGE(DailyQueue[Required_FTE])
+			formatString: "0.0"
+
+		/// Average FTE that showed up per day and queue.
+		measure 'Actual FTE' = AVERAGE(DailyQueue[Actual_FTE])
+			formatString: "0.0"
+
+		/// Shrinkage built into the plan.
+		measure 'Planned Shrinkage %' = AVERAGE(DailyQueue[Planned_Shrinkage])
+			formatString: "0.0%"
+
+		/// Time paid but not available for contacts.
+		measure 'Actual Shrinkage %' = AVERAGE(DailyQueue[Actual_Shrinkage])
+			formatString: "0.0%"
+
+		/// Percentage points of shrinkage above plan.
+		measure 'Shrinkage vs Plan (pts)' = ([Actual Shrinkage %] - [Planned Shrinkage %]) * 100
+			formatString: "+0.0;-0.0;0.0"
+
+		/// Average adherence to schedule.
+		measure 'Schedule Adherence %' = AVERAGE(DailyQueue[Schedule_Adherence])
+			formatString: "0.0%"
+
+		/// Average customer satisfaction, out of 5.
+		measure 'CSAT' = AVERAGE(DailyQueue[CSAT])
+			formatString: "0.00"
+
+		/// Share of day and queue rows that hit their SL target.
+		measure 'Days SL Met %' = AVERAGEX(DailyQueue, IF(DIVIDE(DailyQueue[Answered_Within_SL], DailyQueue[Handled]) >= DailyQueue[SL_Target], 1, 0))
+			formatString: "0%"
+
+		/// Average contacts offered in an hour, from the intraday profile.
+		measure 'Avg Offered per Hour' = AVERAGE(IntradayProfile[Avg_Offered])
+			formatString: "#,0"
+
+		column Value
+			dataType: int64
+			isHidden
+			isNameInferred
+			sourceColumn: [Value]
+			summarizeBy: none
+
+		partition KPIs = calculated
+			mode: import
+			source = {1}
+
+	relationship DailyQueue_Calendar
+		fromColumn: DailyQueue.Date
+		toColumn: Calendar.Date
+
+	ref table IntradayProfile
+
+		column Hour
+			dataType: int64
+			formatString: 0
+			sourceColumn: Hour
+			summarizeBy: none
+
+		column Weekday
+			dataType: string
+			sourceColumn: Weekday
+			sortByColumn: Weekday_No
+			summarizeBy: none
+
+		column Weekday_No
+			dataType: int64
+			formatString: 0
+			isHidden
+			sourceColumn: Weekday_No
+			summarizeBy: none
