@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contact Centre WFM Dashboard | Rahul</title>
-<meta name="description" content="Workforce management KPI dashboard for a simulated multi-channel contact centre: service level, forecast accuracy, staffing gap, shrinkage, adherence.">
+<title>Service Performance Analysis | Rahul</title>
+<meta name="description" content="Business analysis of why a simulated multi-channel support operation missed its service target: service level, forecast accuracy, staffing gap, shrinkage, adherence.">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--navy:#0f2a4a;--ink:#1d2433;--muted:#5a6475;--line:#e3e8ef;--bg:#f5f7fb;--card:#fff;--teal:#0f9d8a;--amber:#d97706;--red:#dc2626;--blue:#2563eb}
@@ -20,7 +20,7 @@ table.heat{border-collapse:collapse;width:100%;font-size:11px}table.heat td,tabl
 a{color:var(--blue)}
 @media(max-width:820px){.grid{grid-template-columns:1fr}}
 </style></head><body>
-<header><h1>Contact Centre WFM Dashboard</h1><p>Voice · Chat · Email &nbsp;|&nbsp; 1 Jul to 31 Oct 2026 &nbsp;|&nbsp; Simulated data, no company data &nbsp;|&nbsp; Built by Rahul (Control Tower – WFM Analyst)</p></header>
+<header><h1>Why Did Service Level Collapse in the Festive Peak?</h1><p>Voice · Chat · Email &nbsp;|&nbsp; 1 Jul to 31 Oct 2026 &nbsp;|&nbsp; Simulated data, no company data &nbsp;|&nbsp; Built by Rahul, Business Analyst</p></header>
 <div class="wrap">
 <div class="filters"><label>Queue <select id="fq"><option>All</option><option>Voice</option><option>Chat</option><option>Email</option></select></label>
 <label>Period <select id="fp"><option>All</option><option>Business as usual</option><option>Festive peak</option></select></label>
@@ -39,7 +39,7 @@ a{color:var(--blue)}
 <li><b>Mondays are the heaviest,</b> and every queue has two busy spells, late morning and early evening. Those are the hours to keep breaks and training away from.</li>
 <li><b>Next time:</b> base the peak uplift on last year's actual peak, freeze leave and training for that window, and line up a temporary batch.</li></ul></div>
 </div>
-<footer>Power BI data model and DAX measures are in the repo (<a href="https://github.com/mail4rahulwork-sketch/powerbi-contact-centre-wfm-dashboard">GitHub</a>). Web version built with Chart.js from the same CSVs. &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/rahul-219543159/">Rahul on LinkedIn</a></footer>
+<footer>Power BI data model and DAX measures are in the repo (<a href="https://github.com/mail4rahulwork-sketch/service-performance-powerbi-analysis">GitHub</a>). Web version built with Chart.js from the same CSVs. &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/rahul-219543159/">Rahul on LinkedIn</a></footer>
 </div>
 <script>
 const parse=t=>{const [h,...r]=t.trim().split('\n');const k=h.split(',');return r.map(l=>{const v=l.split(',');const o={};k.forEach((c,i)=>o[c]=isNaN(+v[i])||v[i]===''?v[i]:+v[i]);return o;});};
