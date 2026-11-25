@@ -3,7 +3,7 @@
 // private data source and refreshes with an anonymous connection.
 let
     Source = Csv.Document(
-        Web.Contents("https://raw.githubusercontent.com/mail4rahulwork-sketch/powerbi-contact-centre-wfm-dashboard/main/data/daily_queue_performance.csv"),
+        Web.Contents("https://raw.githubusercontent.com/mail4rahulwork-sketch/service-performance-powerbi-analysis/main/data/daily_queue_performance.csv"),
         [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
     ),
     Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),

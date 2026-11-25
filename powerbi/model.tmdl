@@ -44,7 +44,7 @@ createOrReplace
 			mode: import
 			source = CALENDAR(DATE(2026,7,1), DATE(2026,10,31))
 
-	/// Contact Centre WFM Performance model. Built by Rahul (github.com/mail4rahulwork-sketch). All data is simulated.
+	/// Contact Centre Service Performance model. Built by Rahul (github.com/mail4rahulwork-sketch). All data is simulated.
 	table KPIs
 
 		/// Contacts that came in.

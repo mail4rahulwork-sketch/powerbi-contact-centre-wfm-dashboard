@@ -2,7 +2,7 @@
 
 This folder is the Power BI side of the project. The report itself lives in the Power BI service, and everything needed to rebuild it is saved here, so the work doesn't depend on any one Power BI account.
 
-**Report:** Contact Centre WFM Performance, by Rahul. Two pages:
+**Report:** Contact Centre Service Performance, by Rahul. Two pages:
 
 - **Overview:** nine KPI tiles (service level, abandon, forecast accuracy, AHT, staffing gap, shrinkage vs plan, adherence, CSAT, days SL met), service level vs target by day, contacts offered vs forecast, weekly shrinkage, FTE needed vs FTE that showed up, and a table by queue. Filters for period and queue.
 - **Intraday:** average contacts per hour by queue, and a weekday by hour heatmap showing the busiest slots.
@@ -36,4 +36,4 @@ The model reads the two CSVs in `/data` straight from this repo with an anonymou
 If your rebuild shows these, the measures are right.
 
 ---
-Built by Rahul, Control Tower – WFM Analyst. [LinkedIn](https://www.linkedin.com/in/rahul-219543159/) · [GitHub](https://github.com/mail4rahulwork-sketch)
+Built by Rahul, Business Analyst. [LinkedIn](https://www.linkedin.com/in/rahul-219543159/) · [GitHub](https://github.com/mail4rahulwork-sketch)

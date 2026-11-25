@@ -1,7 +1,7 @@
 // Power Query (M) for the IntradayProfile table (average contacts per hour by queue and weekday).
 let
     Source = Csv.Document(
-        Web.Contents("https://raw.githubusercontent.com/mail4rahulwork-sketch/powerbi-contact-centre-wfm-dashboard/main/data/intraday_profile.csv"),
+        Web.Contents("https://raw.githubusercontent.com/mail4rahulwork-sketch/service-performance-powerbi-analysis/main/data/intraday_profile.csv"),
         [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
     ),
     Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
